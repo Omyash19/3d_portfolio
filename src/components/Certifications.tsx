@@ -101,8 +101,8 @@ const Certifications = () => {
   const certification = certifications[currentIndex];
 
   return (
-    <div 
-      className="certifications-section" 
+    <div
+      className="certifications-section"
       id="certifications"
       style={{ paddingTop: "15vh", paddingBottom: "10vh", position: "relative", zIndex: 10 }}
     >
@@ -112,39 +112,35 @@ const Certifications = () => {
         </h2>
 
         <div className="portfolio-book-carousel portfolio-carousel">
-          <div className="portfolio-carousel-stage cert-stage">
+          <div className="portfolio-carousel-stage portfolio-carousel-stage-compact cert-stage-compact">
             <div
               key={`${certification.title}-${currentIndex}`}
               className={`portfolio-carousel-card portfolio-flip-${direction}`}
             >
-              <article className="portfolio-project-card cert-card">
-                <div className="portfolio-project-media">
-                  <div className="portfolio-project-badges">
-                    <span className="portfolio-project-badge">
-                      {certification.issuer}
-                    </span>
-                    <span className="portfolio-project-count">
-                      {String(currentIndex + 1).padStart(2, "0")} / {String(
-                        certifications.length
-                      ).padStart(2, "0")}
-                    </span>
-                  </div>
-
+              <article className="portfolio-project-card-compact cert-card-compact">
+                <div className="portfolio-project-media-compact">
+                  <span className="portfolio-project-count">
+                    {String(currentIndex + 1).padStart(2, "0")} / {String(
+                      certifications.length
+                    ).padStart(2, "0")}
+                  </span>
                   <WorkImage
                     image={certification.image}
                     alt={certification.title}
                   />
                 </div>
 
-                <div className="portfolio-project-strip portfolio-project-strip-title">
-                  <span className="portfolio-project-label">Title</span>
+                <div className="portfolio-project-info-compact">
+                  <span className="portfolio-project-category-tag">
+                    {certification.issuer}
+                  </span>
                   <h4>{certification.title}</h4>
                 </div>
               </article>
             </div>
           </div>
 
-          <div className="portfolio-nav-row">
+          <div className="portfolio-nav-row portfolio-nav-row-compact">
             <div className="portfolio-arrow-group">
               <button
                 className="carousel-arrow"
@@ -170,7 +166,7 @@ const Certifications = () => {
                 data-cursor="disable"
               >
                 <MdGridView />
-                <span>Browse all</span>
+                <span>Browse all {certifications.length}</span>
               </button>
             </div>
 
@@ -178,23 +174,6 @@ const Certifications = () => {
               <span>Flip through certificates</span>
               <span className="portfolio-carousel-divider" />
               <span>{certification.issuer}</span>
-            </div>
-
-            <div className="carousel-dots">
-              {certifications.map((item, index) => (
-                <button
-                  key={item.title}
-                  className={`carousel-dot ${
-                    index === currentIndex ? "carousel-dot-active" : ""
-                  }`}
-                  onClick={() =>
-                    goToSlide(index, index > currentIndex ? "next" : "prev")
-                  }
-                  aria-label={`Go to certification ${index + 1}`}
-                  data-cursor="disable"
-                  disabled={isAnimating}
-                />
-              ))}
             </div>
           </div>
         </div>
