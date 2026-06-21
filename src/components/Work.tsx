@@ -2,8 +2,7 @@ import { useState, useCallback } from "react";
 import "./styles/PortfolioCarousel.css";
 import "./styles/Work.css";
 import WorkImage from "./WorkImage";
-import PortfolioGridOverlay from "./PortfolioGridOverlay";
-import { MdArrowBack, MdArrowForward, MdGridView } from "react-icons/md";
+import { MdArrowBack, MdArrowForward } from "react-icons/md";
 
 type SlideDirection = "next" | "prev";
 
@@ -126,7 +125,6 @@ const Work = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState<SlideDirection>("next");
   const [isAnimating, setIsAnimating] = useState(false);
-  const [isGridOpen, setIsGridOpen] = useState(false);
 
   const goToSlide = useCallback(
     (index: number, nextDirection: SlideDirection) => {
@@ -137,15 +135,6 @@ const Work = () => {
       window.setTimeout(() => setIsAnimating(false), 720);
     },
     [currentIndex, isAnimating]
-  );
-
-  const jumpToSlide = useCallback(
-    (index: number) => {
-      setDirection(index >= currentIndex ? "next" : "prev");
-      setCurrentIndex(index);
-      setIsGridOpen(false);
-    },
-    [currentIndex]
   );
 
   const goToPrev = useCallback(() => {
@@ -170,18 +159,24 @@ const Work = () => {
         </h2>
 
         <div className="portfolio-book-carousel portfolio-carousel">
-          <div className="portfolio-carousel-stage portfolio-carousel-stage-compact">
+          <div className="portfolio-carousel-stage">
             <div
               key={`${project.title}-${currentIndex}`}
               className={`portfolio-carousel-card portfolio-flip-${direction}`}
             >
-              <article className="portfolio-project-card-compact work-card">
-                <div className="portfolio-project-media-compact">
-                  <span className="portfolio-project-count">
-                    {String(currentIndex + 1).padStart(2, "0")} / {String(
-                      projects.length
-                    ).padStart(2, "0")}
-                  </span>
+              <article className="portfolio-project-card work-card">
+                <div className="portfolio-project-media">
+                  <div className="portfolio-project-badges">
+                    <span className="portfolio-project-badge">
+                      {project.category}
+                    </span>
+                    <span className="portfolio-project-count">
+                      {String(currentIndex + 1).padStart(2, "0")} / {String(
+                        projects.length
+                      ).padStart(2, "0")}
+                    </span>
+                  </div>
+
                   <WorkImage
                     image={project.image}
                     alt={project.title}
@@ -189,12 +184,12 @@ const Work = () => {
                   />
                 </div>
 
-                <div className="portfolio-project-info-compact">
-                  <span className="portfolio-project-category-tag">
-                    {project.category}
-                  </span>
+                <div className="portfolio-project-strip portfolio-project-strip-title">
+                  <span className="portfolio-project-label">Title</span>
                   <h4>{project.title}</h4>
-                  <div className="portfolio-project-divider" />
+                </div>
+
+                <div className="portfolio-project-strip portfolio-project-strip-stack">
                   <span className="portfolio-project-label">Tech Stack</span>
                   <p>{project.tools}</p>
                 </div>
@@ -202,7 +197,7 @@ const Work = () => {
             </div>
           </div>
 
-          <div className="portfolio-nav-row portfolio-nav-row-compact">
+          <div className="portfolio-nav-row">
             <div className="portfolio-arrow-group">
               <button
                 className="carousel-arrow"
@@ -222,14 +217,6 @@ const Work = () => {
               >
                 <MdArrowForward />
               </button>
-              <button
-                className="portfolio-browse-all"
-                onClick={() => setIsGridOpen(true)}
-                data-cursor="disable"
-              >
-                <MdGridView />
-                <span>Browse all {projects.length}</span>
-              </button>
             </div>
 
             <div className="portfolio-carousel-status" aria-live="polite">
@@ -237,22 +224,26 @@ const Work = () => {
               <span className="portfolio-carousel-divider" />
               <span>{project.title}</span>
             </div>
+
+            <div className="carousel-dots">
+              {projects.map((item, index) => (
+                <button
+                  key={item.title}
+                  className={`carousel-dot ${
+                    index === currentIndex ? "carousel-dot-active" : ""
+                  }`}
+                  onClick={() =>
+                    goToSlide(index, index > currentIndex ? "next" : "prev")
+                  }
+                  aria-label={`Go to project ${index + 1}`}
+                  data-cursor="disable"
+                  disabled={isAnimating}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </div>
-
-      <PortfolioGridOverlay
-        isOpen={isGridOpen}
-        activeIndex={currentIndex}
-        onClose={() => setIsGridOpen(false)}
-        onSelect={jumpToSlide}
-        heading="All Projects"
-        items={projects.map((p) => ({
-          title: p.title,
-          subtitle: p.category,
-          image: p.image,
-        }))}
-      />
     </section>
   );
 };

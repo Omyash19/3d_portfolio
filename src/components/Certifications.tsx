@@ -1,9 +1,8 @@
 import { useState, useCallback } from "react";
 import "./styles/PortfolioCarousel.css";
 import "./styles/Certifications.css";
-import { MdArrowBack, MdArrowForward, MdGridView } from "react-icons/md";
+import { MdArrowBack, MdArrowForward } from "react-icons/md";
 import WorkImage from "./WorkImage";
-import PortfolioGridOverlay from "./PortfolioGridOverlay";
 
 type SlideDirection = "next" | "prev";
 
@@ -64,7 +63,6 @@ const Certifications = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState<SlideDirection>("next");
   const [isAnimating, setIsAnimating] = useState(false);
-  const [isGridOpen, setIsGridOpen] = useState(false);
 
   const goToSlide = useCallback(
     (index: number, nextDirection: SlideDirection) => {
@@ -75,15 +73,6 @@ const Certifications = () => {
       window.setTimeout(() => setIsAnimating(false), 720);
     },
     [currentIndex, isAnimating]
-  );
-
-  const jumpToSlide = useCallback(
-    (index: number) => {
-      setDirection(index >= currentIndex ? "next" : "prev");
-      setCurrentIndex(index);
-      setIsGridOpen(false);
-    },
-    [currentIndex]
   );
 
   const goToPrev = useCallback(() => {
@@ -101,46 +90,46 @@ const Certifications = () => {
   const certification = certifications[currentIndex];
 
   return (
-    <div
-      className="certifications-section"
-      id="certifications"
-      style={{ paddingTop: "15vh", paddingBottom: "10vh", position: "relative", zIndex: 10 }}
-    >
-      <div className="certifications-container section-container">
+    <section className="certifications-section section-container" id="certifications">
+      <div className="certifications-container">
         <h2>
           Certifications <span>&</span> Training
         </h2>
 
         <div className="portfolio-book-carousel portfolio-carousel">
-          <div className="portfolio-carousel-stage portfolio-carousel-stage-compact cert-stage-compact">
+          <div className="portfolio-carousel-stage cert-stage">
             <div
               key={`${certification.title}-${currentIndex}`}
               className={`portfolio-carousel-card portfolio-flip-${direction}`}
             >
-              <article className="portfolio-project-card-compact cert-card-compact">
-                <div className="portfolio-project-media-compact">
-                  <span className="portfolio-project-count">
-                    {String(currentIndex + 1).padStart(2, "0")} / {String(
-                      certifications.length
-                    ).padStart(2, "0")}
-                  </span>
+              <article className="portfolio-project-card cert-card">
+                <div className="portfolio-project-media">
+                  <div className="portfolio-project-badges">
+                    <span className="portfolio-project-badge">
+                      {certification.issuer}
+                    </span>
+                    <span className="portfolio-project-count">
+                      {String(currentIndex + 1).padStart(2, "0")} / {String(
+                        certifications.length
+                      ).padStart(2, "0")}
+                    </span>
+                  </div>
+
                   <WorkImage
                     image={certification.image}
                     alt={certification.title}
                   />
                 </div>
 
-                <div className="portfolio-project-info-compact">
-                  <span className="portfolio-project-category-tag">
-                    {certification.issuer}
-                  </span>
+                <div className="portfolio-project-strip portfolio-project-strip-title">
+                  <span className="portfolio-project-label">Title</span>
                   <h4>{certification.title}</h4>
                 </div>
               </article>
             </div>
           </div>
 
-          <div className="portfolio-nav-row portfolio-nav-row-compact">
+          <div className="portfolio-nav-row">
             <div className="portfolio-arrow-group">
               <button
                 className="carousel-arrow"
@@ -160,14 +149,6 @@ const Certifications = () => {
               >
                 <MdArrowForward />
               </button>
-              <button
-                className="portfolio-browse-all"
-                onClick={() => setIsGridOpen(true)}
-                data-cursor="disable"
-              >
-                <MdGridView />
-                <span>Browse all {certifications.length}</span>
-              </button>
             </div>
 
             <div className="portfolio-carousel-status" aria-live="polite">
@@ -175,23 +156,27 @@ const Certifications = () => {
               <span className="portfolio-carousel-divider" />
               <span>{certification.issuer}</span>
             </div>
+
+            <div className="carousel-dots">
+              {certifications.map((item, index) => (
+                <button
+                  key={item.title}
+                  className={`carousel-dot ${
+                    index === currentIndex ? "carousel-dot-active" : ""
+                  }`}
+                  onClick={() =>
+                    goToSlide(index, index > currentIndex ? "next" : "prev")
+                  }
+                  aria-label={`Go to certification ${index + 1}`}
+                  data-cursor="disable"
+                  disabled={isAnimating}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </div>
-
-      <PortfolioGridOverlay
-        isOpen={isGridOpen}
-        activeIndex={currentIndex}
-        onClose={() => setIsGridOpen(false)}
-        onSelect={jumpToSlide}
-        heading="All Certifications"
-        items={certifications.map((c) => ({
-          title: c.title,
-          subtitle: c.issuer,
-          image: c.image,
-        }))}
-      />
-    </div>
+    </section>
   );
 };
 

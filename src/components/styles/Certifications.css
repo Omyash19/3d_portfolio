@@ -24,22 +24,8 @@
   margin: auto;
 }
 
-.cert-stage-compact {
-  min-height: clamp(300px, 34vw, 420px);
-}
-
-.cert-card-compact .portfolio-project-media-compact {
-  background: #f4f4f6;
-}
-
-.cert-card-compact .portfolio-project-media-compact .work-image-static {
-  background: #f4f4f6;
-}
-
-.cert-card-compact .portfolio-project-media-compact .portfolio-project-count {
-  background: rgba(5, 8, 16, 0.88);
-  border: 1px solid rgba(94, 234, 212, 0.4);
-  color: var(--accentColor);
+.cert-stage {
+  min-height: clamp(380px, 52vw, 620px);
 }
 
 @media only screen and (max-width: 1400px) {
@@ -59,7 +45,7 @@
     margin-bottom: 30px;
   }
 
-  .cert-stage-compact {
+  .cert-stage {
     min-height: auto;
   }
 }
