@@ -230,6 +230,35 @@
 .portfolio-arrow-group {
   display: flex;
   gap: 14px;
+  align-items: center;
+}
+
+.portfolio-browse-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 52px;
+  padding: 0 20px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.03);
+  color: #eae5ec;
+  font-size: 13px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-family: inherit;
+}
+
+.portfolio-browse-all svg {
+  font-size: 18px;
+}
+
+.portfolio-browse-all:hover {
+  border-color: var(--accentColor);
+  background: rgba(94, 234, 212, 0.1);
+  color: var(--accentColor);
 }
 
 .portfolio-carousel .carousel-arrow,
@@ -321,6 +350,12 @@
 
   .portfolio-arrow-group {
     justify-content: center;
+  }
+
+  .portfolio-browse-all {
+    height: 44px;
+    padding: 0 16px;
+    font-size: 11px;
   }
 
   .portfolio-project-badges {

@@ -1,8 +1,9 @@
 import { useState, useCallback } from "react";
 import "./styles/PortfolioCarousel.css";
 import "./styles/Certifications.css";
-import { MdArrowBack, MdArrowForward } from "react-icons/md";
+import { MdArrowBack, MdArrowForward, MdGridView } from "react-icons/md";
 import WorkImage from "./WorkImage";
+import PortfolioGridOverlay from "./PortfolioGridOverlay";
 
 type SlideDirection = "next" | "prev";
 
@@ -63,6 +64,7 @@ const Certifications = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState<SlideDirection>("next");
   const [isAnimating, setIsAnimating] = useState(false);
+  const [isGridOpen, setIsGridOpen] = useState(false);
 
   const goToSlide = useCallback(
     (index: number, nextDirection: SlideDirection) => {
@@ -73,6 +75,15 @@ const Certifications = () => {
       window.setTimeout(() => setIsAnimating(false), 720);
     },
     [currentIndex, isAnimating]
+  );
+
+  const jumpToSlide = useCallback(
+    (index: number) => {
+      setDirection(index >= currentIndex ? "next" : "prev");
+      setCurrentIndex(index);
+      setIsGridOpen(false);
+    },
+    [currentIndex]
   );
 
   const goToPrev = useCallback(() => {
@@ -153,6 +164,14 @@ const Certifications = () => {
               >
                 <MdArrowForward />
               </button>
+              <button
+                className="portfolio-browse-all"
+                onClick={() => setIsGridOpen(true)}
+                data-cursor="disable"
+              >
+                <MdGridView />
+                <span>Browse all</span>
+              </button>
             </div>
 
             <div className="portfolio-carousel-status" aria-live="polite">
@@ -180,6 +199,19 @@ const Certifications = () => {
           </div>
         </div>
       </div>
+
+      <PortfolioGridOverlay
+        isOpen={isGridOpen}
+        activeIndex={currentIndex}
+        onClose={() => setIsGridOpen(false)}
+        onSelect={jumpToSlide}
+        heading="All Certifications"
+        items={certifications.map((c) => ({
+          title: c.title,
+          subtitle: c.issuer,
+          image: c.image,
+        }))}
+      />
     </div>
   );
 };

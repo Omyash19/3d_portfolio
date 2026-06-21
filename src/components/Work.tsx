@@ -2,7 +2,8 @@ import { useState, useCallback } from "react";
 import "./styles/PortfolioCarousel.css";
 import "./styles/Work.css";
 import WorkImage from "./WorkImage";
-import { MdArrowBack, MdArrowForward } from "react-icons/md";
+import PortfolioGridOverlay from "./PortfolioGridOverlay";
+import { MdArrowBack, MdArrowForward, MdGridView } from "react-icons/md";
 
 type SlideDirection = "next" | "prev";
 
@@ -125,6 +126,7 @@ const Work = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState<SlideDirection>("next");
   const [isAnimating, setIsAnimating] = useState(false);
+  const [isGridOpen, setIsGridOpen] = useState(false);
 
   const goToSlide = useCallback(
     (index: number, nextDirection: SlideDirection) => {
@@ -135,6 +137,15 @@ const Work = () => {
       window.setTimeout(() => setIsAnimating(false), 720);
     },
     [currentIndex, isAnimating]
+  );
+
+  const jumpToSlide = useCallback(
+    (index: number) => {
+      setDirection(index >= currentIndex ? "next" : "prev");
+      setCurrentIndex(index);
+      setIsGridOpen(false);
+    },
+    [currentIndex]
   );
 
   const goToPrev = useCallback(() => {
@@ -217,6 +228,14 @@ const Work = () => {
               >
                 <MdArrowForward />
               </button>
+              <button
+                className="portfolio-browse-all"
+                onClick={() => setIsGridOpen(true)}
+                data-cursor="disable"
+              >
+                <MdGridView />
+                <span>Browse all</span>
+              </button>
             </div>
 
             <div className="portfolio-carousel-status" aria-live="polite">
@@ -244,6 +263,19 @@ const Work = () => {
           </div>
         </div>
       </div>
+
+      <PortfolioGridOverlay
+        isOpen={isGridOpen}
+        activeIndex={currentIndex}
+        onClose={() => setIsGridOpen(false)}
+        onSelect={jumpToSlide}
+        heading="All Projects"
+        items={projects.map((p) => ({
+          title: p.title,
+          subtitle: p.category,
+          image: p.image,
+        }))}
+      />
     </section>
   );
 };
