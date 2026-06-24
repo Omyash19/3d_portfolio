@@ -4,9 +4,11 @@
   background-color: var(--backgroundColor);
   padding: 80px 0;
   margin-bottom: 100px;
-  width: 100%;
+  /* Centering layout contexts */
   display: flex;
   justify-content: center;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .certifications-section h2 {
@@ -14,7 +16,7 @@
   font-weight: 500;
   margin-top: 0;
   margin-bottom: 50px;
-  text-align: left; /* Changed to left-align to match the "Certifications & Training" position in your screenshot */
+  text-align: left; /* Kept left-aligned to cleanly lead into the certificate card layout edge */
 }
 
 .certifications-section h2 > span {
@@ -24,11 +26,21 @@
 }
 
 .certifications-container {
+  /* Aligns exactly with your panel overlay constraints and tech stack layouts */
   width: 100%;
-  max-width: 1440px; /* Adjust this to match your exact portfolio content boundary width (e.g., 1200px or 1440px) */
+  max-width: 1280px; 
   margin: 0 auto;
-  padding: 0 40px;   /* Provides a clean gutter so it doesn't touch screen edges on slightly smaller displays */
+  padding: 0 32px;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Clear alignment override for child structural elements */
+.certifications-container .portfolio-book-carousel {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 auto !important;
 }
 
 .cert-stage {
@@ -50,11 +62,11 @@
   .certifications-section h2 {
     font-size: 40px;
     margin-bottom: 30px;
-    text-align: center; /* Optionally center it on mobile layouts for better balance */
+    text-align: center;
   }
 
   .certifications-container {
-    padding: 0 20px; /* Thinner padding on smaller mobile devices */
+    padding: 0 22px;
   }
 
   .cert-stage {
