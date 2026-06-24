@@ -4,6 +4,9 @@
   background-color: var(--backgroundColor);
   padding: 80px 0;
   margin-bottom: 100px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .certifications-section h2 {
@@ -11,7 +14,7 @@
   font-weight: 500;
   margin-top: 0;
   margin-bottom: 50px;
-  text-align: center;
+  text-align: left; /* Changed to left-align to match the "Certifications & Training" position in your screenshot */
 }
 
 .certifications-section h2 > span {
@@ -21,7 +24,11 @@
 }
 
 .certifications-container {
-  margin: auto;
+  width: 100%;
+  max-width: 1440px; /* Adjust this to match your exact portfolio content boundary width (e.g., 1200px or 1440px) */
+  margin: 0 auto;
+  padding: 0 40px;   /* Provides a clean gutter so it doesn't touch screen edges on slightly smaller displays */
+  box-sizing: border-box;
 }
 
 .cert-stage {
@@ -43,6 +50,11 @@
   .certifications-section h2 {
     font-size: 40px;
     margin-bottom: 30px;
+    text-align: center; /* Optionally center it on mobile layouts for better balance */
+  }
+
+  .certifications-container {
+    padding: 0 20px; /* Thinner padding on smaller mobile devices */
   }
 
   .cert-stage {
